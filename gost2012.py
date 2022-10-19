@@ -61,7 +61,7 @@ def encodeKey(key, oids, algo="1.2.643.7.1.1.1.1"):
 		seq2,
 		pyasn1.type.univ.OctetString(bytes.fromhex(key))
 	)
-	return '-----BEGIN PRIVATE KEY-----\n{}-----END PRIVATE KEY-----\n'.format(base64.encodestring(encode(seq3)).decode("ascii"))
+	return '-----BEGIN PRIVATE KEY-----\n{}-----END PRIVATE KEY-----\n'.format(base64.encodebytes(encode(seq3)).decode("ascii"))
 
 def unwrap_gost(kek, data, sbox=DEFAULT_SBOX):
     if len(data) != 44:
