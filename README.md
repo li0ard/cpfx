@@ -2,7 +2,7 @@
 
 ### Зависимости
 * asn1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.6.0
-* pyderasn1 9.3
+* pyderasn&nbsp;&nbsp; 9.3
 * pygost&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.11
 
 ### Использование
