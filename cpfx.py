@@ -3,7 +3,7 @@ from pygost.asn1schemas.prvkey import PrivateKeyAlgorithmIdentifier, PrivateKeyI
 from pygost.asn1schemas.x509 import GostR34102012PublicKeyParameters
 from pygost.gost341194 import GOST341194
 from pygost.gost28147 import cfb_decrypt, ecb_decrypt, DEFAULT_SBOX
-import sys, pyderasn, asn1, getpass
+import sys, pyderasn, asn1, getpass, uuid
 from pyderasn import ObjectIdentifier, OctetString, Integer
 from schemas import *
 from pygost.kdf import kdf_gostr3411_2012_256
@@ -113,4 +113,8 @@ elif algtype == "42aa": #512
 		buff.append(unwrap_gost(KEKe, bytes.fromhex(ukm + i + cek_mac)).hex())
 	Ks = bytes.fromhex("".join(buff))
 print(" K     = " + Ks.hex())
-print(key2pem(Ks, oids, algooid))
+uid = str(uuid.uuid4())
+f = open("exported_" + uid + ".pem", "w")
+f.write(key2pem(Ks, oids, algooid))
+f.close()
+print("Сохранено в exported_" + uid + ".pem")
