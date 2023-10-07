@@ -21,7 +21,8 @@ class CPBlob(Sequence):
 	schema = (
 		("version", Integer()),
 		("notused", Any()),
-		("value", OctetString())
+		("value", OctetString()),
+		("notused2", Any(optional=True))
 	)
 
 class CPExportBlobCek(Sequence):
