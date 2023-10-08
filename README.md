@@ -1,11 +1,26 @@
 # Декодер PFX по ГОСТ 2012 от КриптоПро (aka CPfx)
 
 ### Зависимости
-| Модуль     | Версия |
-|------------|--------|
-| asn1       | 2.6.0  |
-| pyderasn   | 9.3    |
-| pygost     | 5.11   |
+<table>
+  <thead>
+    <th>Модуль</th>
+    <th>Версия</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="">asn1</a></td>
+      <td>2.6.0</td>
+    </tr>
+    <tr>
+      <td><a href="http://www.pyderasn.cypherpunks.ru/">PyDERASN</a></td>
+      <td>9.3</td>
+    </tr>
+    <tr>
+      <td><a href="http://www.pygost.cypherpunks.ru/">PyGOST</a></td>
+      <td>5.11</td>
+    </tr>
+  </tbody>
+</table>
 
 ### Использование
 ```
