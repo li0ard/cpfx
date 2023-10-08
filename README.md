@@ -8,7 +8,7 @@
   </thead>
   <tbody>
     <tr>
-      <td><a href="">asn1</a></td>
+      <td><a href="https://pypi.org/project/asn1/">asn1</a></td>
       <td>2.6.0</td>
     </tr>
     <tr>
