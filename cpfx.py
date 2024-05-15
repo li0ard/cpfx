@@ -1,10 +1,8 @@
-from pygost.asn1schemas.pfx import PFX, SafeContents, OctetStringSafeContents
-from pygost.asn1schemas.prvkey import PrivateKeyAlgorithmIdentifier, PrivateKeyInfo
-from pygost.asn1schemas.x509 import GostR34102012PublicKeyParameters
+from pygost.asn1schemas.pfx import PFX, OctetStringSafeContents
 from pygost.gost341194 import GOST341194
 from pygost.gost28147 import cfb_decrypt, ecb_decrypt, DEFAULT_SBOX
-import sys, pyderasn, asn1, getpass, uuid
-from pyderasn import ObjectIdentifier, OctetString, Integer
+import sys, pyderasn, getpass, uuid
+from pyderasn import ObjectIdentifier, OctetString, Integer, TagMismatch
 from schemas import *
 from pygost.kdf import kdf_gostr3411_2012_256
 from base64 import standard_b64encode
@@ -20,23 +18,6 @@ def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, 
     print(f'\r{prefix} |{bar}| {percent}% {suffix}', end = printEnd)
     if iteration == total: 
         print()
-
-def getOids(hexstr):
-	decoder = asn1.Decoder()
-	decoder.start(hexstr)
-	tag, value = decoder.read()
-	decoder.start(value)
-	tag, value = decoder.read()
-	tag, value = decoder.read()
-	decoder.start(value)
-	tag, value = decoder.read()
-	tag, value = decoder.read()
-	decoder.start(value)
-	tag, value = decoder.read()
-	params = value
-	tag, value = decoder.read()
-	dgst = value
-	return (params, dgst)
 
 def key2pem(key, oids, algo):
 	key = OctetString(key)
@@ -88,7 +69,11 @@ while count < iters + 1:
 print(" KEY   = " + KEY.hex())
 print(" IV    = " + salt.hex()[:16])
 result = cfb_decrypt(KEY, keybag, iv=bytes.fromhex(salt.hex()[:16]))
-result = CPBlob().decode(result)[0]
+try:
+	result = CPBlob().decode(result)[0]
+except TagMismatch as e:
+	print("Расшифровка не удалась, скорее всего вы ввели неправильный пароль.\nЕсли вы считаете, что это всё таки ошибка создайте issue на Github")
+	quit()
 result = bytes(result["value"]).hex()
 algtype = result[:32][8:12]
 if algtype == "42aa":
@@ -99,14 +84,19 @@ result = CPExportBlob().decode(bytes.fromhex(result[32:]))[0]
 ukm = bytes(result["value"]["ukm"]).hex()
 cek_enc = bytes(result["value"]["cek"]["enc"]).hex()
 cek_mac = bytes(result["value"]["cek"]["mac"]).hex()
-oids = getOids(bytes(result["value"]["oids"]))
+oids = (
+	result["value"]["oids"]["privateKeyAlgorithm"]["params"]["curve"],
+	result["value"]["oids"]["privateKeyAlgorithm"]["params"]["digest"],
+)
 
 KEKe = kdf_gostr3411_2012_256(KEY, bytes.fromhex("26bdb878"), bytes.fromhex(ukm))
 print(" KEKe  = " + KEKe.hex())
 
 if algtype == "46aa": #256
+	print(" ALGO  = ГОСТ Р 34.10-2012 (256 бит)")
 	Ks = unwrap_gost(KEKe, bytes.fromhex(ukm + cek_enc + cek_mac))
 elif algtype == "42aa": #512
+	print(" ALGO  = ГОСТ Р 34.10-2012 (512 бит)")
 	cek_enc2 = [cek_enc[i:i+64] for i in range(0,len(cek_enc),64)]
 	buff = []
 	for i in cek_enc2:

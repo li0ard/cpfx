@@ -1,4 +1,4 @@
-# Декодер PFX по ГОСТ 2012 от КриптоПро (aka CPfx)
+# Декодер PFX по ГОСТ 2012 от КриптоПро
 
 ### Зависимости
 <table>
@@ -7,10 +7,6 @@
     <th>Версия</th>
   </thead>
   <tbody>
-    <tr>
-      <td><a href="https://pypi.org/project/asn1/">asn1</a></td>
-      <td>2.6.0</td>
-    </tr>
     <tr>
       <td><a href="http://www.pyderasn.cypherpunks.ru/">PyDERASN</a></td>
       <td>9.3</td>

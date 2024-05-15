@@ -1,4 +1,4 @@
-from pyderasn import Sequence, OctetString, ObjectIdentifier, Any, Integer
+from pyderasn import Sequence, OctetString, ObjectIdentifier, Any, Integer, BitString, tag_ctxc
 class CPParamsValue(Sequence):
 	schema = (
 		("salt", OctetString()),
@@ -31,11 +31,29 @@ class CPExportBlobCek(Sequence):
 		("mac", OctetString())
 	)
 
+class PrivateKeyParameters(Sequence):
+	schema = (
+		("curve", ObjectIdentifier()),
+		("digest", ObjectIdentifier()),
+	)
+
+class PrivateKeyAlgorithm(Sequence):
+	schema = (
+		("algorithm", ObjectIdentifier()),
+		("params", PrivateKeyParameters())
+	)
+
+class PrivateKeyInfo(Sequence):
+	schema = (
+		("version", BitString()),
+		("privateKeyAlgorithm", PrivateKeyAlgorithm(impl=tag_ctxc(0)))
+	)
+
 class CPExportBlob2(Sequence):
 	schema = (
 		("ukm", OctetString()),
 		("cek", CPExportBlobCek()),
-		("oids", Any())
+		("oids", PrivateKeyInfo(impl=tag_ctxc(0)))
 	)
 
 class CPExportBlob(Sequence):
