@@ -8,11 +8,11 @@
   </thead>
   <tbody>
     <tr>
-      <td><a href="http://www.pyderasn.cypherpunks.ru/">PyDERASN</a></td>
+      <td><a href="http://www.pyderasn.cypherpunks.su/">PyDERASN</a></td>
       <td>9.3</td>
     </tr>
     <tr>
-      <td><a href="http://www.pygost.cypherpunks.ru/">PyGOST</a></td>
+      <td><a href="http://www.pygost.cypherpunks.su/">PyGOST</a></td>
       <td>5.11</td>
     </tr>
   </tbody>
